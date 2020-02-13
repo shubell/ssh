@@ -22,7 +22,7 @@
 # Set to true if you do *NOT* want Magisk to mount
 # any files for you. Most modules would NOT want
 # to set this flag to true
-SKIPMOUNT=true
+SKIPMOUNT=false
 
 # Set to true if you need to load system.prop
 PROPFILE=false
@@ -133,27 +133,28 @@ on_install() {
   local TMPDIR="$MODPATH/tmp"
   ui_print "[0/7] Preparing module directory"
   mkdir -p "$TMPDIR"
-  mkdir -p "$MODPATH/usr/bin/raw"
-
+  mkdir -p "$MODPATH/system/xbin/raw"
+#well need to check if i rly need the raw folder....
   ui_print "[1/7] Extracting architecture unspecific module files"
   unzip -o "$ZIPFILE" 'common/opensshd.init' -d "$MODPATH/tmp" >&2
   unzip -o "$ZIPFILE" 'common/magisk_ssh_library_wrapper' -d "$MODPATH/tmp" >&2
   mv "$TMPDIR/common/opensshd.init" "$MODPATH"
-  mv "$TMPDIR/common/magisk_ssh_library_wrapper" "$MODPATH/usr/bin/raw"
+  mv "$TMPDIR/common/magisk_ssh_library_wrapper" "$MODPATH/system/xbin/raw"
 
   ui_print "[2/7] Extracting libraries and binaries for $ARCH"
   unzip -o "$ZIPFILE" "arch/$ARCH/*" -d "$TMPDIR" >&2
-  mv "$TMPDIR/arch/$ARCH/lib" "$MODPATH/usr"
-  mv "$TMPDIR/arch/$ARCH/bin"/* "$MODPATH/usr/bin"
-
+  mv "$TMPDIR/arch/$ARCH/lib"/* "$MODPATH/system/lib64"
+  mv "$TMPDIR/arch/$ARCH/bin"/* "$MODPATH/system/xbin"
+#had to put in 64bit folder
   ui_print "[3/7] Configuring library path wrapper"
   for f in scp sftp sftp-server ssh ssh-keygen sshd; do
-    mv "$MODPATH/usr/bin/$f" "$MODPATH/usr/bin/raw/$f"
-    ln -s ./raw/magisk_ssh_library_wrapper "$MODPATH/usr/bin/$f"
+    mv "$MODPATH/system/xbin/$f" "$MODPATH/system/xbin/raw/$f"
+    ln -s ./raw/magisk_ssh_library_wrapper "$MODPATH/system/xbin/$f"
   done
 
   ui_print "[4/7] Recreating symlinks"
-  ln -s ./libcrypto.so.1.0.0 "$MODPATH/usr/lib/libcrypto.so"
+ # ln -s ./libcrypto.so.1.0.0 "$MODPATH/system/lib/libcrypto.so"
+ # well don't need as i am puting everything in system/lib64
 
   ui_print "[5/7] Creating SSH user directories"
   mkdir -p /data/ssh
@@ -180,7 +181,7 @@ set_permissions() {
   # The following is the default rule, DO NOT remove
   set_perm_recursive $MODPATH 0 0 0755 0644
 
-  set_perm_recursive "$MODPATH/usr/bin" 0 0 0755 0755
+  set_perm_recursive "$MODPATH/system/xbin" 0 0 0755 0755
   set_perm "$MODPATH/opensshd.init" 0 0 0755
   set_perm /data/ssh/sshd_config 0 0 0600
   chown shell:shell /data/ssh/shell
