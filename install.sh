@@ -143,7 +143,7 @@ on_install() {
 
   ui_print "[2/7] Extracting libraries and binaries for $ARCH"
   unzip -o "$ZIPFILE" "arch/$ARCH/*" -d "$TMPDIR" >&2
-  mv "$TMPDIR/arch/$ARCH/lib"/* "$MODPATH/system/lib64"
+  mv "$TMPDIR/arch/$ARCH/lib" "$MODPATH/system/lib64/"
   mv "$TMPDIR/arch/$ARCH/bin"/* "$MODPATH/system/xbin"
 #had to put in 64bit folder
   ui_print "[3/7] Configuring library path wrapper"
