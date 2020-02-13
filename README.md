@@ -1,5 +1,5 @@
 Changes made in this fork are only in the magisk install config.
-I wanted to have ssh installed into system/xbin
+I wanted to have ssh installed into system/xbin. Did not rly check if the daemon works.
 
 MagiskSSH
 =========
