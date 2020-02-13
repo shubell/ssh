@@ -10,7 +10,7 @@ KILL=/system/bin/kill
 
 : ${MODDIR:="$(realpath "$(dirname "$0")")"}
 export MODDIR
-prefix="$MODDIR/usr"
+prefix="/system"
 sysconfdir=/data/ssh
 piddir=/data/ssh
 
