@@ -1,6 +1,3 @@
-Changes made in this fork are only in the magisk install config.
-I wanted to have ssh installed into system/xbin. Did not rly check if the daemon works.
-
 MagiskSSH
 =========
 
@@ -49,6 +46,11 @@ Feel free to create a Merge Request against the [source repository](https://gitl
 [Source Code Repository](https://gitlab.com/d4rcm4rc/MagiskSSH)
 
 ## Changelog
+ 
+###### 2020-02-13
+ -  magisk install config installing into system/xbin and system/lib64
+Well I wanted to have ssh installed so I can use ssh from everywhere. Did not rly check if the daemon works.
+
 
 ###### 2019-11-26, v0.10
 
